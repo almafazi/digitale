@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="css/classic.css" />
+        <script src="js/realuploader.js"></script>
+    </head>
+    <style>
+        #targetElement {
+            width: 555px;
+            border: 1px solid darkgray;
+            text-align: center;
+            position: absolute;
+            padding-bottom: 60px;
+        }
+
+    </style>
+    <body><div id="targetElement"></div>
+    <script type="text/javascript">
+        var uploader = new RealUploader("#targetElement", {
+            remotePath: "upload_here/",
+            accept: "image/*",
+            resizeImage: {
+                maxWidth:           190,
+                maxHeight:          60,
+                outputQuality:      1,
+                scaleMethod:        3,
+                outputFormat:       null,
+                allowOverResize:    false,
+                keepExif:           false,
+                keepAspectRatio:    true,
+                unsharpAmount:      0,
+                unsharpThreshold:   0,
+                alpha:              true
+            },
+            thumbHeight:            500,
+            thumbWidth:             0,
+            thumbPostfix:           '_thumb',
+            thumbFormat:            'jpg',
+            listeners: {
+                dragEnter: function(e, element) {
+                    console.log("Drag Enter Event", e);
+                },
+                dragLeave: function(e, element) {
+                    console.log("Drag Leave Event", e);
+                },
+                beforeRenderFile: function(file, template) {
+                    var title = "Caption: <input type=text class=file_title style='width:130px'><br>";
+                    return template + title;
+                },
+                afterRenderFile: function(file, elements) {
+                    //file.dom === elements
+                }
+            },
+            data: function(file) {
+                var container = file.dom.container;
+                var title = container.querySelector('.file_title');
+
+                return {
+                    title: title.value
+                }
+            }
+        });
+    </script>
+    </body>
+    </html>
